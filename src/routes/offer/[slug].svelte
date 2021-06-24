@@ -15,7 +15,6 @@
 	import marked from "marked";
 
 	export let offer;
-	export let slug;
 
 	const { session } = stores();
 	let user = $session.user;

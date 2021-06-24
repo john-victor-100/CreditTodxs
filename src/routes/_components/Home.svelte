@@ -2,7 +2,6 @@
 	import { onMount } from "svelte";
 	import { stores } from "@sapper/app";
 	import MainView from "./MainView/index.svelte";
-	import Tags from "./Tags.svelte";
 	import * as api from "api.js";
 
 	export let p = 1;
