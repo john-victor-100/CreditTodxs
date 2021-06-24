@@ -1,0 +1,63 @@
+<script>
+	import { stores } from "@sapper/app";
+	import OfferPreview from "./OfferPreview.svelte";
+	import ListPagination from "./ListPagination.svelte";
+	import * as api from "api.js";
+
+	export let tab,
+		username = false;
+	export let favorites = false;
+	export let tag;
+	export let p;
+
+	const { session, page } = stores();
+
+	let query;
+	let offers;
+	let offersCount;
+
+	$: {
+		const endpoint = tab === "feed" ? "offers/feed" : "offers";
+		const page_size = tab === "feed" ? 5 : 10;
+
+		let params = `limit=${page_size}&offset=${(p - 1) * page_size}`;
+		if (tab === "tag") params += `&tag=${tag}`;
+		if (tab === "profile")
+			params += `&${
+				favorites ? "favorited" : "author"
+			}=${encodeURIComponent(username)}`;
+
+		query = `${endpoint}?${params}`;
+	}
+
+	$: query && getData();
+
+	async function getData() {
+		offers = null;
+
+		// TODO do we need some error handling here?
+		({ offers, offersCount } = await api.get(
+			query,
+			$session.user && $session.user.token
+		));
+	}
+</script>
+
+{#if offers}
+	{#if offers.length === 0}
+		<div class="article-preview">Nenhuma oferta aqui aqui ainda.</div>
+	{:else}
+		<div class="grid grid-cols-1 md:grid-cols-2">
+			{#each offers as article (article.slug)}
+				<OfferPreview {article} user={$session.user} />
+			{/each}
+
+			<ListPagination
+				{offersCount}
+				page={parseInt($page.params.user, 10)}
+			/>
+		</div>
+	{/if}
+{:else}
+	<div class="article-preview">Carregando...</div>
+{/if}

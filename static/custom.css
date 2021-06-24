@@ -1,0 +1,31 @@
+.logo {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+    font-family: source sans pro, sans-serif;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #373a3c;
+    box-sizing: inherit;
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.active {
+    background-color:rgba(55,65,81);
+}
+
+.toggle__dot {
+    top: -.25rem;
+    left: -.25rem;
+    transition: all 0.3s ease-in-out;
+}
+  
+input:checked ~ .toggle__dot {
+    transform: translateX(100%);
+    background-color: #042555;
+  }
